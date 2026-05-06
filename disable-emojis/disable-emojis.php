@@ -4,7 +4,7 @@
 Plugin Name: Disable Emojis (GDPR friendly)
 Plugin URI: https://geek.hellyer.kiwi/plugins/disable-emojis/
 Description: Disable Emojis (GDPR friendly)
-Version: 1.8
+Version: 1.9
 Author: Ryan Hellyer
 Author URI: https://geek.hellyer.kiwi/
 License: GPL2
@@ -30,15 +30,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 declare(strict_types=1);
 
-use Inpsyde\Modularity\Package;
-use Inpsyde\Modularity\Properties\PluginProperties;
+use RyanHellyer\DisableEmojis\Vendor\Inpsyde\Modularity\Package;
+use RyanHellyer\DisableEmojis\Vendor\Inpsyde\Modularity\Properties\PluginProperties;
 use RyanHellyer\DisableEmojis\EmojiModule;
 
 $autoloader = __DIR__ . '/vendor/autoload.php';
-if (! file_exists($autoloader)) {
-    return;
+if (file_exists($autoloader)) {
+    require_once $autoloader;
 }
-require_once $autoloader;
+
+require_once __DIR__ . '/src/EmojiModule.php';
 
 $properties = PluginProperties::new(__FILE__);
 $package = Package::new($properties);

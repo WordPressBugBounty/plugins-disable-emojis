@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace RyanHellyer\DisableEmojis\Vendor\Inpsyde\Modularity\Container;
 
-namespace Inpsyde\Modularity\Container;
-
-use Psr\Container\ContainerInterface;
-
+use RyanHellyer\DisableEmojis\Vendor\Psr\Container\ContainerInterface;
 /**
  * @phpstan-import-type Service from \Inpsyde\Modularity\Module\ServiceModule
  * @phpstan-import-type ExtendingService from \Inpsyde\Modularity\Module\ExtendingModule
@@ -20,7 +18,6 @@ class ContainerConfigurator
     private ?ContainerInterface $compiledContainer = null;
     /** @var ContainerInterface[] */
     private array $containers = [];
-
     /**
      * @param ContainerInterface[] $containers
      */
@@ -29,7 +26,6 @@ class ContainerConfigurator
         array_map([$this, 'addContainer'], $containers);
         $this->extensions = $extensions ?? new ServiceExtensions();
     }
-
     /**
      * @param ContainerInterface $container
      * @return void
@@ -38,7 +34,6 @@ class ContainerConfigurator
     {
         $this->containers[] = $container;
     }
-
     /**
      * @param string $id
      * @param Service $factory
@@ -48,9 +43,8 @@ class ContainerConfigurator
         $this->addService($id, $factory);
         // We're using a hash table to detect later
         // via isset() if a Service as a Factory.
-        $this->factoryIds[$id] = true;
+        $this->factoryIds[$id] = \true;
     }
-
     /**
      * @param string $id
      * @param Service $service
@@ -68,10 +62,8 @@ class ContainerConfigurator
          * If needs be, it will get re-added after this function completes.
          */
         unset($this->factoryIds[$id]);
-
         $this->services[$id] = $service;
     }
-
     /**
      * @param string $id
      * @return bool
@@ -79,18 +71,15 @@ class ContainerConfigurator
     public function hasService(string $id): bool
     {
         if (array_key_exists($id, $this->services)) {
-            return true;
+            return \true;
         }
-
         foreach ($this->containers as $container) {
             if ($container->has($id)) {
-                return true;
+                return \true;
             }
         }
-
-        return false;
+        return \false;
     }
-
     /**
      * @param string $id
      * @param ExtendingService $extender
@@ -100,7 +89,6 @@ class ContainerConfigurator
     {
         $this->extensions->add($id, $extender);
     }
-
     /**
      * @param string $id
      * @return bool
@@ -109,7 +97,6 @@ class ContainerConfigurator
     {
         return $this->extensions->has($id);
     }
-
     /**
      * @return ContainerInterface
      *
@@ -118,14 +105,8 @@ class ContainerConfigurator
     public function createReadOnlyContainer(): ContainerInterface
     {
         if ($this->compiledContainer === null) {
-            $this->compiledContainer = new ReadOnlyContainer(
-                $this->services,
-                $this->factoryIds,
-                $this->extensions,
-                $this->containers
-            );
+            $this->compiledContainer = new ReadOnlyContainer($this->services, $this->factoryIds, $this->extensions, $this->containers);
         }
-
         return $this->compiledContainer;
     }
 }

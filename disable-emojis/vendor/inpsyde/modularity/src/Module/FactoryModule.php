@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Inpsyde\Modularity\Module;
+declare (strict_types=1);
+namespace RyanHellyer\DisableEmojis\Vendor\Inpsyde\Modularity\Module;
 
 /**
  * @phpstan-import-type Service from ServiceModule
